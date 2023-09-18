@@ -2,7 +2,7 @@
  * @Author: jiahao.wang jiahao.wang@montage-tech.com
  * @Date: 2023-09-07 10:14:01
  * @LastEditors: jiahao.wang
- * @LastEditTime: 2023-09-07 15:00:16
+ * @LastEditTime: 2023-09-18 16:34:11
  * @Description: file content
 -->
 # profile_parser_main 使用说明
@@ -51,6 +51,10 @@ optional arguments:
                         device event catrgory //device 侧event 类别，默认为 kernel
   -mc MONITOR_CAT, --monitor_cat MONITOR_CAT  //host 侧需要监控的event 类别，默认为 python_function, 想输出aten 算子的相关信息的话需要 用 cpu_op
                         monitor evnet category
+  --max_depth MAX_DEPTH
+                        max depth of output events //输出的最大深度 默认为 -1 即都输出
+  --min_depth MIN_DEPTH
+                        min depth of output events //输出的最小深度 默认为 -1
 
 ```
 
@@ -69,4 +73,6 @@ optional arguments:
 1. :warning: 本脚本建立在这样一个假设下：`host触发device 任务的event` 都是独立的，没有子event或者调用栈，违反这一假设可能没法得到预期数据
 2. :warning: device duration 时间没有包括device空闲时间
 3. :warning: `host触发device 任务的event` 触发 的device侧任务的结束时间可能会超出当前监控的host侧event的时间区间，我们不会去检查和约束
+4. :warning: 设置的`输出最大深度/最小深度`(max_depth/min_depth) 是闭区间
+
 

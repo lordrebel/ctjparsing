@@ -186,6 +186,8 @@ def _parse_data_by_categroy(path:str,ignored_cats=[],ignored_phs=[],event_filter
                     category[item["cat"]].append(candidate)
             else:    
                 category[item["cat"]].append(TraceEvent(item))
+        for key in category:
+            category[key]=sorted(category[key],key=lambda x:x.timestamp)
     return devices, TraceCategories(category)
 
 class VisitorBase:
