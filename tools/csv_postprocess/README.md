@@ -4,7 +4,7 @@
 
 #### 说明
 
-对于有子级的event指保留子级,对于没有子级的event保留当前event
+对于有子级的event只保留子级event,对于没有子级的event保留当前event
 
 #### 用法：
 
