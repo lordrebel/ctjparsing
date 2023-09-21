@@ -34,7 +34,7 @@
   7. kernel infos：当前event 根据 `host触发device 任务的event` 找到的 device侧触发的event 的相关参数
   8. host ts: 当前host 侧执行的任务的时间戳
   9. cuda launch ts：  当前event匹配上的 `host触发device 任务的event`以及其时间戳
-  10 kernel ts： 当前event 根据 `host触发device 任务的event` 找到的 device侧触发的event 的时间戳
+  10. kernel ts： 当前event 根据 `host触发device 任务的event` 找到的 device侧触发的event 的时间戳
 
 ## 使用方法：
 
