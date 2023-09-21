@@ -27,7 +27,7 @@ class CsvWriterVisitor(VisitorBase):
                  max_depth:int =-1,
                  min_depth:int=-1) -> None:
         super().__init__() 
-        self.header=["name","args","host duration(ms)","device duration(ms)","cuda launch duration(ms)","cuda_runtime","kernels","kernel infos"]
+        self.header=["name","args","host duration(ms)","device duration(ms)","cuda launch duration(ms)","cuda_runtime","kernels","kernel infos","host ts","cuda launch ts","kernel ts"]
         self.writer=csv.writer(f,quoting=csv.QUOTE_ALL)
         self.writer.writerow(self.header)
         self._cats=cats
@@ -39,9 +39,10 @@ class CsvWriterVisitor(VisitorBase):
         
     def visit_event(self, event: TraceEvent, prefix="",current_depth=-1):
         
-        row=["","","","","","","",""]
+        row=["","","","","","","","","","",""]
         row[0]=prefix+event.name
         row[1]=str(event.infos["args"]) if "args" in event.infos else ""
+        row[-3]=event.timestamp
         row[2]=event.duration/1000
         
         row[3]=event.get_corelations_durations(
@@ -55,9 +56,12 @@ class CsvWriterVisitor(VisitorBase):
             host_launch_idxs=event.lower_cat_event_idx[self.host_launch_cat_name]
             host_launch_events=[getattr(self._cats,self.host_launch_cat_name)[idx] for idx in host_launch_idxs]
             host_launch_time=[str({item.name:item.duration/1000}) for item in host_launch_events]
+            host_launch_ts=[str({item.name:item.timestamp}) for item in host_launch_events]
             row[5]=",".join(host_launch_time)
+            row[-2]=",".join(host_launch_ts)
             kernel_called=[]
             kernel_infos=[]
+            kernel_ts=[]
             device_total_events=getattr(self._cats,self.device_cat_name)
             for launch_event in host_launch_events:
                 for cidx in launch_event.direct_corelations_idx[self.device_cat_name]:
@@ -65,8 +69,12 @@ class CsvWriterVisitor(VisitorBase):
                                         device_total_events[cidx].duration/1000}))
                     kernel_infos.append(str({device_total_events[cidx].name:
                                         device_total_events[cidx].infos["args"]}))
+                    kernel_ts.append(str({device_total_events[cidx].name:
+                                        device_total_events[cidx].timestamp}))
+                    
             row[6]=",".join(kernel_called)
             row[7]=",".join(kernel_infos)
+            row[-1]=",".join(kernel_ts)
         
         if self.max_depth!=-1 :
             if current_depth<self.min_depth or current_depth>self.max_depth:
