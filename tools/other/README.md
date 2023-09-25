@@ -4,7 +4,7 @@
 
 将 torch profiler 输出的 table字符串转成csv文件
 
-torch profile 的他变了字符串如下：
+torch profile 的table字符串如下：
 
 ```txt
 
