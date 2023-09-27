@@ -1,0 +1,81 @@
+{   "op_groups":{
+
+    "matmul&conv":["addmm", "matmul", "::mm", "$aten::bmm", "$aten::convolution"
+        ],
+    "reduce" : ["$aten::native_layer_norm",
+                "$aten::layer_norm", 
+                "$aten::native_group_norm", 
+                "$aten::group_norm", 
+                "mean", "cumsum"
+            ],
+
+    "index":["aten::index"],
+
+    "attention":["_fmha", 
+                "::flash_fwd", 
+                "efficient_attention_forward_cutlass", 
+                "$aten::scaled_dot_product_attention",
+                "$aten::scaled_dot_product_attention"],
+
+    "pointwise" :["aten::mul", 
+                  "aten::add", 
+                  "aten::sub", 
+                  "add_", 
+                  "aten::div", 
+                  "aten::gelu", 
+                  "aten::silu", 
+                  "aten::relu", 
+                  "$aten::softmax", 
+                  "aten::sigmoid", 
+                  "aten::exp", 
+                  "tanh", 
+                  "$aten::pow", 
+                  "$aten::reciprocal", 
+                  "aten::rsqrt", 
+                  "$aten::abs", 
+                  "aten::argmin"], 
+
+    "memory" :["$aten::_to_copy", "$aten::clone",
+                 "$aten::fill_",
+                 "masked_fill_",
+                 "new_ones", "$aten::zero_",
+                 "$aten::contiguous",
+                 "$aten::constant_pad_nd",
+                 "aten::clamp",
+                 "$aten::normal_", 
+				 "aten::embedding",
+				 "$aten::to"],
+
+    "select_prefix":["aten::embedding"],
+
+    "cast_prefix":["$aten::to"]     
+    },
+    "statistic_target":["weight_shape",
+                        "actual total latency",
+                        "actual calcluate latency",
+                        "actual memory latency",
+                        "theoretical total latency(weight,parallel)",
+                        "theoretical calcluate latency",
+                        "theoretical memory latency(weight)",
+                        "actual calcluate desity ratio(weight)",
+                        "theoretical calcluate desity ratio(weight)",
+                        "actual utilization(weight,parallel)",
+                        "actual memory utilization(weight)"
+                    ],
+                    
+    "group_draw_target":["weight_shape",
+                    "actual total latency",
+                    "theoretical total latency(weight,parallel)",
+                    "actual calcluate desity ratio(weight)",
+                    "theoretical calcluate desity ratio(weight)",
+                    "actual utilization(weight,parallel)",
+                    "actual memory utilization(weight)"],
+
+    "per_op_draw_target":["weight_shape",
+                            "actual total latency",
+                            "theoretical total latency(weight,parallel)",
+                            "actual calcluate desity ratio(weight)",
+                            "theoretical calcluate desity ratio(weight)",
+                            "actual utilization(weight,parallel)",
+                            "actual memory utilization(weight)"]
+}
