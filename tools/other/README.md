@@ -123,7 +123,7 @@ optional arguments:
 
     "cast_prefix":["$aten::to"]     
     },
-    "statistic_target":   //统计目标，即需要进行统计的，在输入的csv文件找哦你个存在的列
+    "statistic_target":   //统计目标，即需要进行统计的，在输入的csv文件中存在的列
                     ["weight_shape",
                         "actual total latency",
                         "actual calcluate latency",
